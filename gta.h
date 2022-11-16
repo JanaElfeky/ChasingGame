@@ -2,28 +2,20 @@
 #define GTA_H
 
 #include <QMainWindow>
-#include <iostream>
-#include <QApplication>
-#include <QGraphicsView>
-#include <QGraphicsScene>
-#include <QFile>
-#include <QTextStream>
-#include <QGraphicsPixmapItem>
-
 
 QT_BEGIN_NAMESPACE
-namespace Ui { class GTA; }
+namespace Ui { class gta; }
 QT_END_NAMESPACE
 
-class GTA : public QMainWindow
+class gta : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    GTA(QWidget *parent = nullptr);
-    ~GTA();
+    gta(QWidget *parent = nullptr);
+    ~gta();
 
 private:
-    Ui::GTA *ui;
+    Ui::gta *ui;
 };
 #endif // GTA_H

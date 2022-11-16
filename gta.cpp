@@ -1,14 +1,14 @@
 #include "gta.h"
 #include "ui_gta.h"
 
-GTA::GTA(QWidget *parent)
+gta::gta(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::GTA)
+    , ui(new Ui::gta)
 {
     ui->setupUi(this);
 }
 
-GTA::~GTA()
+gta::~gta()
 {
     delete ui;
 }
