@@ -9,12 +9,8 @@
 #include <QGraphicsPixmapItem>
 #include <QDir>
 #include <QDebug>
-#include <QStandardItemModel>
-#include <QGraphicsPixmapItem>
-#include <QGraphicsScene>
 #include <QKeyEvent>
 #include <QList>
-//#include "bullet.h"
 
 class Enemy:public QObject, public QGraphicsPixmapItem
 {   Q_OBJECT;
@@ -26,8 +22,16 @@ class Enemy:public QObject, public QGraphicsPixmapItem
 public:
 
  Enemy(int boardData[10][10], int r, int c);
+ Enemy();
  void enemyMove(int lives,int border[10][10]);
+ int getRow();
+ int getColumn();
+ void setLives(int livesE);
+ int getLivesE();
+
+
 
 };
 
 #endif // ENEMY_H
+

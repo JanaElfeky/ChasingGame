@@ -9,12 +9,9 @@
 #include <QGraphicsPixmapItem>
 #include <QDir>
 #include <QDebug>
-#include <QStandardItemModel>
-#include <QGraphicsPixmapItem>
-#include <QGraphicsScene>
 #include <QKeyEvent>
 #include <QList>
-//#include "bullet.h"
+#include "enemy.h"
 
 class Franklin1 :public QObject, public QGraphicsPixmapItem
 {
@@ -30,10 +27,8 @@ class Franklin1 :public QObject, public QGraphicsPixmapItem
     Franklin1(int boardData[10][10],int lives);
     int getLivesF();
 public slots:
-    void keypress (QKeyEvent* event);
+    void keypress (QKeyEvent* event, Enemy* enemy1, Enemy* enemy2);
+};
 
-    };
 
-
-//};
 #endif // FRANKLIN_H
