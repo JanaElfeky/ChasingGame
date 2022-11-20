@@ -1,6 +1,7 @@
 #ifndef POWER_PELLETS_H
 #define POWER_PELLETS_H
 
+
 #include <QGraphicsPixmapItem>
 class power_pellets: public QGraphicsPixmapItem
 {

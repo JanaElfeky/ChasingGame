@@ -1,34 +1,41 @@
 #ifndef FRANKLIN_H
 #define FRANKLIN_H
-#include <QApplication>
-#include <iostream>
-#include <QGraphicsView>
-#include <QGraphicsScene>
-#include <QFile>
-#include <QTextStream>
+
+
 #include <QGraphicsPixmapItem>
 #include <QDir>
 #include <QDebug>
+#include <QStandardItemModel>
+#include <QGraphicsPixmapItem>
+#include <QGraphicsScene>
 #include <QKeyEvent>
 #include <QList>
+#include <QTimer>
 #include "enemy.h"
 
-class Franklin1 :public QObject, public QGraphicsPixmapItem
+
+class Franklin :public QObject, public QGraphicsPixmapItem
 {
   Q_OBJECT;
   private:
   int lives;
   int row;
   int column;
-  int data[10][10];
+  int boarder[10][10];
+  Enemy* Enemy1,*Enemy2;
 
    public:
-
-    Franklin1(int boardData[10][10],int lives);
+    QTime time;
+    QTimer *timer2 = new QTimer();
+    bool flag=false;
+    Franklin(int boardData[10][10],int lives,Enemy* enemy1, Enemy* enemy2);
     int getLivesF();
-public slots:
-    void keypress (QKeyEvent* event, Enemy* enemy1, Enemy* enemy2);
-};
 
+public slots:
+    void keyPressEvent (QKeyEvent* event);
+    void setFranklin();
+     void sethulk();
+     //void handler(Enemy* enemy1,Enemy* enemy2);
+};
 
 #endif // FRANKLIN_H

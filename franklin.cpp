@@ -1,141 +1,230 @@
 #include "franklin.h"
-#include <iostream>
-#include "bullet.h"
+#include "bullets.h"
 #include "enemy.h"
-#include "power_pellet.h"
-#include "power_pellet.h"
+#include "power_pellets.h"
+#include "door.h"
 #include <QTimer>
-#include <QtMath>
-//#include "ui_gta.h"
-
-Franklin1::Franklin1(int border[10][10],int livesInput)
-    {
-    lives=livesInput;
-    int flag=0;
-    if(flag==0){
-    QPixmap franklin("/Users/apple/Desktop/CSCE 2/project/Franklin.png");
+Franklin::Franklin(int border[10][10],int l,Enemy* enemy1, Enemy* enemy2)
+    {   
+    QPixmap franklin("/Users/markemad/Documents/Fall 2022/CS 2/gta/Franklin.png");
     franklin = franklin.scaledToWidth(50);
     franklin = franklin.scaledToHeight(50);
-    setPixmap(franklin);}
-    //if(flag==1){
-//    QPixmap franklin("/Users/apple/Desktop/CSCE 2/project/Franklin2.png");
-//    franklin = franklin.scaledToWidth(50);
-//    franklin = franklin.scaledToHeight(50);
-//    setPixmap(franklin);}
+    setPixmap(franklin);
+     lives = 3;
      row=5;
      column=5;
     setPos(50 + column * 50, 50 + row * 50);
     for (int i = 0; i < 10; i++)
         for (int j = 0; j < 10; j++)
-            data[i][j] = border[i][j];
-    //Ui::GTA ui;
-    //ui.LivesLeft->setText(QString::number(lives));
-    }
-//int f=0;
-//if(f==0){
-//    QPixmap franklin("/Users/apple/Desktop/CSCE 2/project/Franklin.png");
-//    franklin = franklin.scaledToWidth(50);
-//    franklin = franklin.scaledToHeight(50);
-//    setPixmap(franklin);}
-//if(f==1){
-//    QPixmap franklin("/Users/apple/Desktop/CSCE 2/projectFranklin2.png");
-//    franklin = franklin.scaledToWidth(50);
-//    franklin = franklin.scaledToHeight(50);
-void Franklin1:: keypress (QKeyEvent* event,Enemy* enemy1, Enemy* enemy2)
-    {
-        if ((event->key() == Qt::Key_Up) && (data[row - 1][column] == 2))
+            boarder[i][j] = border[i][j];
+    Enemy1=enemy1;
+    Enemy2=enemy2;
+}
+
+//void Franklin::handler(Enemy* enemy1,Enemy* enemy2){
+//    QTimer *timer = new QTimer();
+//      connect(timer,SIGNAL(timeout()),this,SLOT(setFranklin()));
+//      timer->start(1800);
+//     QList<QGraphicsItem*> value = collidingItems();
+//     for (int i = 0; i < value.size(); i++)
+//     {
+//         if (typeid(*value[i]) == typeid(Bullets)){
+//             scene()->removeItem(value[i]);
+//             QPixmap franklin3("/Users/markemad/Documents/Fall 2022/CS 2/gta/Franklin3.png");
+//              franklin3 = franklin3.scaledToWidth(50);
+//              franklin3 = franklin3.scaledToHeight(50);
+//              setPixmap(franklin3);
+
+//             double d1, d2;
+//                         d1=qSqrt((qPow((enemy1->getRow()-row),2)-qPow((enemy1->getColumn()-column),2)));
+//                         d2=qSqrt((qPow((enemy2->getRow()-row),2)-qPow((enemy2->getColumn()-column),2)));
+//                         if (d2>=d1){
+//                             enemy1->setLives((enemy1->getLivesE())-1);
+//                         }
+//                         else {
+//                             enemy2->setLives((enemy2->getLivesE())-1);
+//                         }
+//                         if (enemy1->getLivesE()==0){
+//                             enemy1->~Enemy();
+//                         }
+//                         if (enemy2->getLivesE()==0){
+//                             enemy2->~Enemy();
+//                         }
+
+//                         if (enemy1->getLivesE()==0 && enemy2->getLivesE()==0){
+//                             QPixmap youWin("/Users/apple/Desktop/CSCE 2/project/you_win.png");
+//                             youWin=youWin.scaledToHeight(300);
+//                             youWin=youWin.scaledToWidth(300);
+//                             setPixmap(youWin);
+
+//            // connect(timer, &QTimer::timeout, this, QOverload<>::of(&Franklin::update));
+//            QPixmap franklin3("/Users/markemad/Documents/Fall 2022/CS 2/gta/Franklin3.png");
+//             franklin3 = franklin3.scaledToWidth(50);
+//             franklin3 = franklin3.scaledToHeight(50);
+//             setPixmap(franklin3);
+
+
+//             // haytala3 el timer
+//
+
+//         }
+//     }
+//    QList<QGraphicsItem*> values = collidingItems();
+//     for (int i = 0; i < values.size(); i++)
+//    {
+//       if (typeid(*value[i]) == typeid(power_pellets)){
+//          scene()->removeItem(value[i]);
+//           if (typeid(*values[i]) != typeid(power_pellets)){
+//                        QTime time;
+//                         time.setHMS(0,1,0);
+
+//                        //add timer
+//                     // ask law nehot soora lama yakhod el power pellet
+//                     if (typeid(*values[i]) == typeid(Enemy)){
+//                     lives--;
+//                     if (lives==0){
+//                                       QPixmap gameOver("/Users/apple/Desktop/CSCE 2/project/game_over.png");
+//                                       gameOver=gameOver.scaledToHeight(300);
+//                                        gameOver=gameOver.scaledToWidth(300);
+//                                        setPixmap(gameOver);
+//                                     }
+//                         Franklin(boarder,lives);
+//                       Enemy(boarder,2,7);
+//                         Enemy(boarder,7,7);
+//                        }
+//          }
+//}
+
+void Franklin::keyPressEvent(QKeyEvent* event)
+{
+
+
+     QPixmap franklin("/Users/markemad/Documents/Fall 2022/CS 2/gta/Franklin.png");
+     franklin = franklin.scaledToWidth(50);
+     franklin = franklin.scaledToHeight(50);
+     setPixmap(franklin);
+    if (event->key() == Qt::Key_Up && boarder[row - 1][column] == 2)
     {
         row--;
-//        if (f==0)
-//            f=1;
-//        else f=0;
+
     }
-    else if ((event->key() == Qt::Key_Down) && (data[row + 1][column] == 2))
+    else if (event->key() == Qt::Key_Down && boarder[row + 1][column] == 2)
     {
         row++;
-//        if (f==0)
-//            f=1;
-//        else f=0;
+
     }
-    else if (event->key() == Qt::Key_Right && data[row][column + 1] == 2)
+    else if (event->key() == Qt::Key_Right && boarder[row][column + 1] == 2)
     {
         column++;
-//        if (f==0)
-//            f=1;
-//        else f=0;
+
     }
-    else if (event->key() == Qt::Key_Left && data[row][column - 1] == 2)
+    else if (event->key() == Qt::Key_Left && boarder[row][column - 1] == 2)
     {
         column--;
-//        if (f==0)
-//            f=1;
-//        else f=0;
+
     }
     setPos(50 + column * 50, 50 + row * 50);
-    QList<QGraphicsItem*> value = collidingItems();
-    for (int i = 0; i < value.size(); i++)
-    {
-        if (typeid(*value[i]) == typeid(Bullet)){
-            scene()->removeItem(value[i]);
-            double d1, d2;
-            d1=qSqrt((qPow((enemy1->getRow()-row),2)-qPow((enemy1->getColumn()-column),2)));
-            d2=qSqrt((qPow((enemy2->getRow()-row),2)-qPow((enemy2->getColumn()-column),2)));
-            if (d2>=d1){
-                enemy1->setLives((enemy1->getLivesE())-1);
-            }
-            else {
-                enemy2->setLives((enemy2->getLivesE())-1);
-            }
-            if (enemy1->getLivesE()==0){
-                enemy1->~Enemy();
-            }
-            if (enemy2->getLivesE()==0){
-                enemy2->~Enemy();
-            }
+    QTimer *timer = new QTimer();
+    connect(timer,SIGNAL(timeout()),this,SLOT(setFranklin()));
+    timer->start(1800);
+     QList<QGraphicsItem*> value = collidingItems();
+     int bulletCount=4;
+     for (int i = 0; i < value.size(); i++)
+     {
+         if (typeid(*value[i]) == typeid(Bullets)){
+             scene()->removeItem(value[i]);
+             bulletCount--;
+             if (bulletCount==0){
+                 Enemy1->~Enemy();
+                 Enemy2->~Enemy();
+             }
+             QPixmap franklin3("/Users/markemad/Documents/Fall 2022/CS 2/gta/Franklin3.png");
+              franklin3 = franklin3.scaledToWidth(50);
+              franklin3 = franklin3.scaledToHeight(50);
+              setPixmap(franklin3);
 
-            if (enemy1->getLivesE()==0 && enemy2->getLivesE()==0){
-                QPixmap youWin("/Users/apple/Desktop/CSCE 2/project/you_win.png");
-                youWin=youWin.scaledToHeight(300);
-                youWin=youWin.scaledToWidth(300);
-                setPixmap(youWin);
-            }
-            QTimer * timer = new QTimer(this);
-            //connect(timer, &QTimer::timeout, this, QOverload<>::of(&Franklin1::update));
-            QPixmap franklin2("/Users/apple/Desktop/CSCE 2/project/Franklin3.png");
-            franklin2 = franklin2.scaledToWidth(50);
-            franklin2 = franklin2.scaledToHeight(50);
-            setPixmap(franklin2);
-            connect(timer,SIGNAL(timeout()),this,SLOT(this->setPixmap(franklin2)));
-            timer->start(1000);
+             double d1, d2;
+             int enemyCount=2;
+                         d1=qSqrt((qPow((Enemy1->getRow()-row),2)+qPow((Enemy1->getColumn()-column),2)));
+                         d2=qSqrt((qPow((Enemy2->getRow()-row),2)+qPow((Enemy2->getColumn()-column),2)));
+                         if (d2>=d1){
+                             Enemy1->setLives((Enemy1->getLivesE())-1);
+                             if (Enemy1->getLivesE()==0){
+                                 Enemy1->~Enemy();
+                                 enemyCount--;
+                             }
+                         }
+                         else {
+                             Enemy2->setLives((Enemy2->getLivesE())-1);
+                             if (Enemy2->getLivesE()==0){
+                                 Enemy2->~Enemy();
+                                 enemyCount--;
+                             }
+                         }
 
-             // haytala3 el timer
-            // hayzawad el sot
-           //hayzawad soura w howa masek el sela7
-        }
-    }
-    QList<QGraphicsItem*> value2 = collidingItems();
-    for (int i = 0; i < value2.size(); i++)
+
+         }
+         if (Enemy1->getLivesE()==0 && Enemy2->getLivesE()==0 && lives!=0){
+             door door1(boarder,5,3);
+             scene.addItem();
+
+             QPixmap door("/Users/markemad/Documents/Fall 2022/CS 2/gta/SciFi_Door_Pixel.png");
+             door = door.scaledToWidth(50);
+             door = door.scaledToHeight(50);
+             setPixmap(door);
+             setPos(50 + 5 * 50, 50 + 5 * 50);
+             QPixmap youWin("/Users/markemad/Documents/Fall 2022/CS 2/gta/you_win.jpeg");
+             youWin=youWin.scaledToHeight(300);
+             youWin=youWin.scaledToWidth(300);
+             setPixmap(youWin);
+             }}
+
+    QList<QGraphicsItem*> values = collidingItems();
+    for (int i = 0; i < values.size(); i++)
     {
-        if (typeid(*value2[i]) != typeid(power_pellets)){
-             //add timer
-            // ask law nehot soora lama yakhod el power pellet
-        if (typeid(*value2[i]) == typeid(Enemy)){
-            lives--;
-            if (lives==0){
-                QPixmap gameOver("/Users/apple/Desktop/CSCE 2/project/game_over.png");
-                gameOver=gameOver.scaledToHeight(300);
-                gameOver=gameOver.scaledToWidth(300);
-                setPixmap(gameOver);
-            }
-            //Ui::GTA ui;
-            //ui.LivesLeft->setText(QString::number(lives));
-            Franklin1(data,lives);
-            Enemy(data,2,7);
-            Enemy(data,7,7);
-            }}
+
+        timer2->start(9000000000000000);
+        if (typeid(*values[i]) != typeid(power_pellets)){
+//             timer2->stop();
+                    if (typeid(*values[i]) == typeid(Enemy)){
+                        lives--;
+                       // setPos(50 + column * 50, 50 + row * 50);
+                        if (lives==0){
+                        QPixmap gameOver("/Users/markemad/Documents/Fall 2022/CS 2/gta/game_over.png");
+                        gameOver=gameOver.scaledToHeight(300);
+                        gameOver=gameOver.scaledToWidth(300);
+                        setPixmap(gameOver);
+
+                    }}
+                        //this->setPos(50 + column * 50, 50 + row * 50);
+                       // Enemy1->setPos()
+                       // Franklin(boarder,lives,Enemy1,Enemy2);
+                      //  Enemy(boarder,2,7);
+                       // Enemy(boarder,7,7);
+                        }
+        else if (typeid(*values[i]) == typeid(power_pellets)){
+            scene()->removeItem(values[i]);
+            connect(timer2,SIGNAL(timeout()),this,SLOT(sethulk()));
+            QPixmap hulk("/Users/markemad/Documents/Fall 2022/CS 2/gta/hulk.png");
+             hulk = hulk.scaledToWidth(50);
+             hulk = hulk.scaledToHeight(50);
+             setPixmap(hulk);
+         }}}
+
+
+int Franklin::getLivesF(){
+     return lives;
 }
+void Franklin::sethulk(){
+        QPixmap hulk("/Users/markemad/Documents/Fall 2022/CS 2/gta/hulk.png");
+        hulk = hulk.scaledToWidth(50);
+        hulk = hulk.scaledToHeight(50);
+        this->setPixmap(hulk);
 }
-int Franklin1::getLivesF(){
-          return lives;
+void Franklin::setFranklin(){
+    QPixmap franklin1("/Users/markemad/Documents/Fall 2022/CS 2/gta/Franklin.png");
+    franklin1 = franklin1.scaledToWidth(50);
+    franklin1 = franklin1.scaledToHeight(50);
+    this->setPixmap(franklin1);
 }
 

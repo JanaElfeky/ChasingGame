@@ -1,5 +1,7 @@
 #ifndef ENEMY_H
 #define ENEMY_H
+
+
 #include <QApplication>
 #include <iostream>
 #include <QGraphicsView>
@@ -9,8 +11,12 @@
 #include <QGraphicsPixmapItem>
 #include <QDir>
 #include <QDebug>
+#include <QStandardItemModel>
+#include <QGraphicsPixmapItem>
+#include <QGraphicsScene>
 #include <QKeyEvent>
 #include <QList>
+//#include "bullet.h"
 
 class Enemy:public QObject, public QGraphicsPixmapItem
 {   Q_OBJECT;
@@ -20,18 +26,14 @@ class Enemy:public QObject, public QGraphicsPixmapItem
     int columnE;
     int data [10][10];
 public:
-
- Enemy(int boardData[10][10], int r, int c);
- Enemy();
- void enemyMove(int lives,int border[10][10]);
- int getRow();
- int getColumn();
- void setLives(int livesE);
- int getLivesE();
-
-
+    Enemy(int boardData[10][10], int r, int c);
+   int getRow();
+   int getColumn();
+   void setLives(int livesE);
+   int getLivesE();
+public slots:
+ void enemyMove();
 
 };
 
 #endif // ENEMY_H
-

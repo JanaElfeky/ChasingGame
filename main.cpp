@@ -1,6 +1,6 @@
 #include "gta.h"
-#include "Franklin.h"
-#include "bullet.h"
+#include "franklin.h"
+#include "bullets.h"
 #include "enemy.h"
 #include "power_pellets.h"
 #include <QApplication>
@@ -11,15 +11,19 @@
 #include <QTextStream>
 #include <QGraphicsPixmapItem>
 #include <QDir>
+#include <QTimer>
 #include <QDebug>
 #include <QStandardItemModel>
+#include <QKeyEvent>
+#include <QBrush>
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
    // QApplication board(argc,argv);
     QGraphicsView view;
     QGraphicsScene scene;
-    view.setFixedSize(600, 600);
+    view.setFixedSize(600, 800);
     view.setWindowTitle("GTA Game");
     QBrush brush(Qt::black);
     view.setBackgroundBrush(brush);
@@ -41,47 +45,20 @@ int main(int argc, char *argv[])
     buildingimage = buildingimage.scaledToWidth(500);
     buildingimage = buildingimage.scaledToHeight(50);
     QPixmap treeImage("/Users/markemad/Documents/Fall 2022/CS 2/gta/Tree_image2.jpg");
-    treeImage = treeImage.scaledToWidth(50);
-    treeImage = treeImage.scaledToHeight(50);
+    treeImage = treeImage.scaledToWidth(100);
+    treeImage = treeImage.scaledToHeight(53);
     QPixmap lampImage("/Users/markemad/Documents/Fall 2022/CS 2/gta/Lamp_image.png");
     lampImage = lampImage.scaledToWidth(50);
     lampImage = lampImage.scaledToHeight(50);
     QPixmap roadImage("/Users/markemad/Documents/Fall 2022/CS 2/gta/Road.png");
     roadImage = roadImage.scaledToWidth(50);
     roadImage = roadImage.scaledToHeight(50);
-//    QPixmap enemy("/Users/markemad/Documents/Fall 2022/CS 2/gta/Enemy.png");
-//    enemy = enemy.scaledToWidth(50);
-//    enemy = enemy.scaledToHeight(50);
-    //QPixmap Franklin("/Users/markemad/Documents/Fall 2022/CS 2/gta/Franklin.png");
-    //Franklin = Franklin.scaledToWidth(50);
-    //Franklin = Franklin.scaledToHeight(50);
-//    QPixmap bullet("/Users/markemad/Documents/Fall 2022/CS 2/gta/bullet4.png");
-//    bullet = bullet.scaledToWidth(40);
-//    bullet = bullet.scaledToHeight(40);
     QPixmap  car("/Users/markemad/Documents/Fall 2022/CS 2/gta/car2.png");
     car = car.scaledToWidth(50);
     car = car.scaledToHeight(50);
     QPixmap F_home("/Users/markemad/Documents/Fall 2022/CS 2/gta/Franklin_home.png");
     F_home = F_home.scaledToWidth(50);
     F_home = F_home.scaledToHeight(50);
-    QPixmap door("/Users/markemad/Documents/Fall 2022/CS 2/gta/SciFi_Door_Pixel.png");
-    door = door.scaledToWidth(50);
-    door = door.scaledToHeight(50);
-//    QPixmap base = QPixmap::fromImage(QImage("grassImage"));
-//        QPixmap overlay = QPixmap::fromImage(QImage("lampImage"));
-//        QPixmap result(base.width(), base.height());
-//        result.fill(Qt::transparent); // force alpha channel
-//        {
-//            QPainter painter(&result);
-//            painter.drawPixmap(0, 0, base);
-//            painter.drawPixmap(0, 0, overlay);
-//        }
-//          QStandardItem *CombinedItem = new QStandardItem();
-//          CombinedItem->setData(QVariant(result), Qt::DecorationRole);
-//          model->setItem(1,4,CombinedItem);
-//          pInventory->setModel(modfl);
-
-//        QPainter painter(&treeImage);
 
     QGraphicsPixmapItem boardItems[10][10];
         for (int i = 0; i < 10; i++)
@@ -94,8 +71,7 @@ int main(int argc, char *argv[])
                     boardItems[i][j].setPixmap(grassImage);
                 else if(border[i][j]== 1)
                     boardItems[i][j].setPixmap(buildingimage);
-//                else if(border[i][j]==6)
-//                    boardItems[i][j].setPixmap(bullet);
+
                 else if(border[i][j]== 8)
                    boardItems[i][j].setPixmap(treeImage);
                 else if(border[i][j]==3)
@@ -111,26 +87,35 @@ int main(int argc, char *argv[])
                 // Add to the Scene
                 scene.addItem(&boardItems[i][j]);
             }
-               Franklin1 franklin(border,3);
-               scene.addItem(&franklin);
-               Bullet bullet1(border,1,1);
-               scene.addItem(&bullet1);
-               Bullet bullet2(border,1,8);
-               scene.addItem(&bullet2);
-               Bullet bullet3(border,8,1);
-               scene.addItem(&bullet3);
-               Bullet bullet4(border,8,8);
-               scene.addItem(&bullet4);
-               Enemy enemy(border,2,7);
-               scene.addItem(&enemy);
+               Enemy enemy1(border,7,2);
+               scene.addItem(&enemy1);
                Enemy enemy2(border,7,7);
                scene.addItem(&enemy2);
-               enemy.enemyMove(franklin.getLivesF(),border);
-               enemy2.enemyMove(franklin.getLivesF(),border);
+               Enemy* enemy1ptr=&enemy1;
+               Enemy* enemy2ptr=&enemy2;
+               Franklin franklin(border,3,enemy1ptr,enemy2ptr);
+               scene.addItem(&franklin);
+               Bullets bullet1(border,1,1);
+               scene.addItem(&bullet1);
+               Bullets bullet2(border,1,8);
+               scene.addItem(&bullet2);
+               Bullets bullet3(border,8,1);
+               scene.addItem(&bullet3);
+               Bullets bullet4(border,8,8);
+               scene.addItem(&bullet4);
+               QTimer *timer = new QTimer();
+               QObject::connect(timer,SIGNAL(timeout()), &enemy1 ,SLOT(enemyMove()));
+               QObject::connect(timer,SIGNAL(timeout()), &enemy2 ,SLOT(enemyMove()));
+               timer->start(1000);
+               power_pellets power1(border,4,6);
+               scene.addItem(&power1);
+               power_pellets power2(border,5,7);
+               scene.addItem(&power2);
+               franklin.setFlag(QGraphicsPixmapItem::ItemIsFocusable);
+               franklin.setFocus();
                view.setScene(&scene);
                view.show();
                return a.exec();
-
 
 
 }
