@@ -164,20 +164,20 @@ void Franklin::keyPressEvent(QKeyEvent* event)
 
 
          }
-         if (Enemy1->getLivesE()==0 && Enemy2->getLivesE()==0 && lives!=0){
-             door door1(boarder,5,3);
-             scene.addItem();
+//          if (Enemy1->getLivesE()==0 && Enemy2->getLivesE()==0 && lives!=0){
+//              door door1(boarder,5,3);
+//              scene.addItem();
 
-             QPixmap door("/Users/markemad/Documents/Fall 2022/CS 2/gta/SciFi_Door_Pixel.png");
-             door = door.scaledToWidth(50);
-             door = door.scaledToHeight(50);
-             setPixmap(door);
-             setPos(50 + 5 * 50, 50 + 5 * 50);
-             QPixmap youWin("/Users/markemad/Documents/Fall 2022/CS 2/gta/you_win.jpeg");
-             youWin=youWin.scaledToHeight(300);
-             youWin=youWin.scaledToWidth(300);
-             setPixmap(youWin);
-             }}
+//              QPixmap door("/Users/markemad/Documents/Fall 2022/CS 2/gta/SciFi_Door_Pixel.png");
+//              door = door.scaledToWidth(50);
+//              door = door.scaledToHeight(50);
+//              setPixmap(door);
+//              setPos(50 + 5 * 50, 50 + 5 * 50);
+//              QPixmap youWin("/Users/markemad/Documents/Fall 2022/CS 2/gta/you_win.jpeg");
+//              youWin=youWin.scaledToHeight(300);
+//              youWin=youWin.scaledToWidth(300);
+//              setPixmap(youWin);
+//              }}
 
     QList<QGraphicsItem*> values = collidingItems();
     for (int i = 0; i < values.size(); i++)
@@ -227,4 +227,23 @@ void Franklin::setFranklin(){
     franklin1 = franklin1.scaledToHeight(50);
     this->setPixmap(franklin1);
 }
+void Franklin:: win()
+{
+    if (Enemy1->getLivesE()==0 && Enemy2->getLivesE()==0 && lives!=0){
+             door door1(boarder,5,3);
+             scene.addItem();
 
+             QPixmap door("/Users/markemad/Documents/Fall 2022/CS 2/gta/SciFi_Door_Pixel.png");
+             door = door.scaledToWidth(50);
+             door = door.scaledToHeight(50);
+             setPixmap(door);
+             setPos(50 + 5 * 50, 50 + 5 * 50);
+             QPixmap youWin("/Users/markemad/Documents/Fall 2022/CS 2/gta/you_win.jpeg");
+             youWin=youWin.scaledToHeight(300);
+             youWin=youWin.scaledToWidth(300);
+             setPixmap(youWin);
+             }
+}
+void Franklin:: lose()
+{
+    
