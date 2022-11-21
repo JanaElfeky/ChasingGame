@@ -9,8 +9,8 @@ private:
     int column2;
     int data[10][10];
 
-public:
-    door( int border[10][10],int row, int column);
+public slots:
+    door(int border[10][10], int r2, int c2);
 };
 
 #endif // DOOR_H

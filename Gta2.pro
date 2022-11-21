@@ -15,7 +15,8 @@ SOURCES += \
     franklin.cpp \
     main.cpp \
     gta.cpp \
-    power_pellets.cpp
+    power_pellets.cpp \
+    widgets.cpp
 
 HEADERS += \
     bullets.h \
@@ -23,7 +24,8 @@ HEADERS += \
     enemy.h \
     franklin.h \
     gta.h \
-    power_pellets.h
+    power_pellets.h \
+    widgets.h
 
 FORMS += \
     gta.ui

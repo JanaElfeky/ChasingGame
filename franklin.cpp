@@ -4,8 +4,9 @@
 #include "power_pellets.h"
 #include "door.h"
 #include <QTimer>
+
 Franklin::Franklin(int border[10][10],int l,Enemy* enemy1, Enemy* enemy2)
-    {   
+    {
     QPixmap franklin("/Users/markemad/Documents/Fall 2022/CS 2/gta/Franklin.png");
     franklin = franklin.scaledToWidth(50);
     franklin = franklin.scaledToHeight(50);
@@ -19,6 +20,7 @@ Franklin::Franklin(int border[10][10],int l,Enemy* enemy1, Enemy* enemy2)
             boarder[i][j] = border[i][j];
     Enemy1=enemy1;
     Enemy2=enemy2;
+    powerful=false;
 }
 
 //void Franklin::handler(Enemy* enemy1,Enemy* enemy2){
@@ -99,10 +101,10 @@ void Franklin::keyPressEvent(QKeyEvent* event)
 {
 
 
-     QPixmap franklin("/Users/markemad/Documents/Fall 2022/CS 2/gta/Franklin.png");
-     franklin = franklin.scaledToWidth(50);
-     franklin = franklin.scaledToHeight(50);
-     setPixmap(franklin);
+//     QPixmap franklin("/Users/markemad/Documents/Fall 2022/CS 2/gta/Franklin.png");
+//     franklin = franklin.scaledToWidth(50);
+//     franklin = franklin.scaledToHeight(50);
+//     setPixmap(franklin);
     if (event->key() == Qt::Key_Up && boarder[row - 1][column] == 2)
     {
         row--;
@@ -124,9 +126,9 @@ void Franklin::keyPressEvent(QKeyEvent* event)
 
     }
     setPos(50 + column * 50, 50 + row * 50);
-    QTimer *timer = new QTimer();
-    connect(timer,SIGNAL(timeout()),this,SLOT(setFranklin()));
-    timer->start(1800);
+//    QTimer *timer = new QTimer();
+//    connect(timer,SIGNAL(timeout()),this,SLOT(setFranklin()));
+//    timer->start(1800);
      QList<QGraphicsItem*> value = collidingItems();
      int bulletCount=4;
      for (int i = 0; i < value.size(); i++)
@@ -163,37 +165,54 @@ void Franklin::keyPressEvent(QKeyEvent* event)
                          }
 
 
-         }
-//          if (Enemy1->getLivesE()==0 && Enemy2->getLivesE()==0 && lives!=0){
-//              door door1(boarder,5,3);
-//              scene.addItem();
+         }}
+          if (Enemy1->getLivesE()==0 && Enemy2->getLivesE()==0 && lives!=0){
+             //QGraphicsScene scene;
+//               door door1(boarder,5,3);
+//              scene()->addItem(&door1);
 
 //              QPixmap door("/Users/markemad/Documents/Fall 2022/CS 2/gta/SciFi_Door_Pixel.png");
 //              door = door.scaledToWidth(50);
 //              door = door.scaledToHeight(50);
 //              setPixmap(door);
-//              setPos(50 + 5 * 50, 50 + 5 * 50);
+//             // setPos(50 + 5 * 50, 50 + 5 * 50);
 //              QPixmap youWin("/Users/markemad/Documents/Fall 2022/CS 2/gta/you_win.jpeg");
 //              youWin=youWin.scaledToHeight(300);
 //              youWin=youWin.scaledToWidth(300);
 //              setPixmap(youWin);
-//              }}
+              emit winner();
+              }
 
     QList<QGraphicsItem*> values = collidingItems();
     for (int i = 0; i < values.size(); i++)
     {
 
-        timer2->start(9000000000000000);
-        if (typeid(*values[i]) != typeid(power_pellets)){
+       timer2->start(1000);
+        if (typeid(*values[i]) == typeid(power_pellets)){
+                    //timer2->start(1);
+//connect(timer2,SIGNAL(timeout()),this,SLOT(decrease_time()));
+
+                  scene()->removeItem(values[i]);
+                  sethulk();
+                  QTimer countDown;
+                  countDown.singleShot(10000,this,SLOT(Normal()));
+//                    connect(timer2,SIGNAL(timeout()),this,SLOT(sethulk()));
+//                    timer2->stop();
+
+                 }
+        //if (typeid(*values[i]) != typeid(power_pellets)){
 //             timer2->stop();
-                    if (typeid(*values[i]) == typeid(Enemy)){
+                    if ((typeid(*values[i]) == typeid(Enemy))&& (powerful==false)){
                         lives--;
+                        emit decrease_health();
                        // setPos(50 + column * 50, 50 + row * 50);
                         if (lives==0){
-                        QPixmap gameOver("/Users/markemad/Documents/Fall 2022/CS 2/gta/game_over.png");
-                        gameOver=gameOver.scaledToHeight(300);
-                        gameOver=gameOver.scaledToWidth(300);
-                        setPixmap(gameOver);
+//                        QPixmap gameOver("/Users/markemad/Documents/Fall 2022/CS 2/gta/game_over.png");
+//                        gameOver=gameOver.scaledToHeight(300);
+//                        gameOver=gameOver.scaledToWidth(300);
+//                        setPixmap(gameOver);
+                            emit loser();
+//exit(0);
 
                     }}
                         //this->setPos(50 + column * 50, 50 + row * 50);
@@ -202,20 +221,23 @@ void Franklin::keyPressEvent(QKeyEvent* event)
                       //  Enemy(boarder,2,7);
                        // Enemy(boarder,7,7);
                         }
-        else if (typeid(*values[i]) == typeid(power_pellets)){
+
+        /*else*/ /*if (typeid(*values[i]) == typeid(power_pellets)){
+            timer2->start(1);
             scene()->removeItem(values[i]);
             connect(timer2,SIGNAL(timeout()),this,SLOT(sethulk()));
-            QPixmap hulk("/Users/markemad/Documents/Fall 2022/CS 2/gta/hulk.png");
-             hulk = hulk.scaledToWidth(50);
-             hulk = hulk.scaledToHeight(50);
-             setPixmap(hulk);
-         }}}
+//            QPixmap hulk("/Users/markemad/Documents/Fall 2022/CS 2/gta/hulk.png");
+//             hulk = hulk.scaledToWidth(50);
+//             hulk = hulk.scaledToHeight(50);
+//             setPixmap(hulk);
+         }}}*/}
 
 
 int Franklin::getLivesF(){
      return lives;
 }
 void Franklin::sethulk(){
+        powerful=true;
         QPixmap hulk("/Users/markemad/Documents/Fall 2022/CS 2/gta/hulk.png");
         hulk = hulk.scaledToWidth(50);
         hulk = hulk.scaledToHeight(50);
@@ -229,28 +251,32 @@ void Franklin::setFranklin(){
 }
 void Franklin:: win()
 {
-    if (Enemy1->getLivesE()==0 && Enemy2->getLivesE()==0 && lives!=0){
-             door door1(boarder,5,3);
-             scene.addItem();
+    //if (Enemy1->getLivesE()==0 && Enemy2->getLivesE()==0 && lives!=0){
+            door door1(boarder,5,3);
+            scene()->addItem(&door1);
 
-             QPixmap door("/Users/markemad/Documents/Fall 2022/CS 2/gta/SciFi_Door_Pixel.png");
-             door = door.scaledToWidth(50);
-             door = door.scaledToHeight(50);
-             setPixmap(door);
-             setPos(50 + 5 * 50, 50 + 5 * 50);
+             //QPixmap door("/Users/markemad/Documents/Fall 2022/CS 2/gta/SciFi_Door_Pixel.png");
+             //door = door.scaledToWidth(50);
+             //door = door.scaledToHeight(50);
+             //setPixmap(door);
+             //setPos(50 + 5 * 50, 50 + 5 * 50);
              QPixmap youWin("/Users/markemad/Documents/Fall 2022/CS 2/gta/you_win.jpeg");
              youWin=youWin.scaledToHeight(300);
              youWin=youWin.scaledToWidth(300);
              setPixmap(youWin);
-             }
+
 }
 void Franklin:: lose()
 {
-    if (Franklin->getLivesF == 0)
-    {
-        QPixmap gameOver("/Users/apple/Desktop/CSCE 2/project/game_over.png");
+    //if (Franklin->getLivesF == 0)
+
+        QPixmap gameOver("/Users/markemad/Documents/Fall 2022/CS 2/gtat/Game_Over.jpeg");
         gameOver=gameOver.scaledToHeight(300);
         gameOver=gameOver.scaledToWidth(300);
         setPixmap(gameOver);
-    }
+
+}
+void Franklin::Normal(){
+    powerful=false;
+    setFranklin();
 }
