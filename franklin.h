@@ -30,6 +30,8 @@ class Franklin :public QObject, public QGraphicsPixmapItem
     bool flag=false;
     Franklin(int boardData[10][10],int lives,Enemy* enemy1, Enemy* enemy2);
     int getLivesF();
+    void win();
+    void lose();
 
 public slots:
     void keyPressEvent (QKeyEvent* event);
