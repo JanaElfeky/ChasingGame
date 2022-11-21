@@ -246,4 +246,11 @@ void Franklin:: win()
 }
 void Franklin:: lose()
 {
-    
+    if (Franklin->getLivesF == 0)
+    {
+        QPixmap gameOver("/Users/apple/Desktop/CSCE 2/project/game_over.png");
+        gameOver=gameOver.scaledToHeight(300);
+        gameOver=gameOver.scaledToWidth(300);
+        setPixmap(gameOver);
+    }
+}
