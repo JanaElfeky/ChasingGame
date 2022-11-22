@@ -12,6 +12,7 @@ public:
     Widgets(QString l, int w, int index_x, int index_y);
 public slots:
     void timers();
+    void timers2();
 private:
     QString label;
     int count;

@@ -23,21 +23,35 @@ class Franklin :public QObject, public QGraphicsPixmapItem
   int column;
   int boarder[10][10];
   Enemy* Enemy1,*Enemy2;
-
+  bool powerful;
+int t=10;
    public:
-    QTime time;
-    QTimer *timer2 = new QTimer();
-    bool flag=false;
-    Franklin(int boardData[10][10],int lives,Enemy* enemy1, Enemy* enemy2);
+    QTime timer;
+
+    Franklin(int boardData[10][10],Enemy* enemy1, Enemy* enemy2);
     int getLivesF();
-    void win();
-    void lose();
+   // int decrease_t(int t);
 
 public slots:
     void keyPressEvent (QKeyEvent* event);
     void setFranklin();
      void sethulk();
-     //void handler(Enemy* enemy1,Enemy* enemy2);
+     void Normal();
+     void win();
+     void lose();
+     int decrease_t(int t){
+          if( t>0)
+             t--;
+          return t;
+
+     }
+     void setGun();
+signals:
+     void winner();
+     void loser();
+     void decrease_health();
+     void decrease_time();
+
 };
 
 #endif // FRANKLIN_H

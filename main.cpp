@@ -3,6 +3,7 @@
 #include "bullets.h"
 #include "enemy.h"
 #include "power_pellets.h"
+#include "widgets.h"
 #include <QApplication>
 #include <iostream>
 #include <QGraphicsView>
@@ -16,6 +17,9 @@
 #include <QStandardItemModel>
 #include <QKeyEvent>
 #include <QBrush>
+#include <QElapsedTimer>
+#include "door.h"
+
 
 int main(int argc, char *argv[])
 {
@@ -23,7 +27,7 @@ int main(int argc, char *argv[])
    // QApplication board(argc,argv);
     QGraphicsView view;
     QGraphicsScene scene;
-    view.setFixedSize(600, 800);
+    view.setFixedSize(700, 800);
     view.setWindowTitle("GTA Game");
     QBrush brush(Qt::black);
     view.setBackgroundBrush(brush);
@@ -87,13 +91,18 @@ int main(int argc, char *argv[])
                 // Add to the Scene
                 scene.addItem(&boardItems[i][j]);
             }
-               Enemy enemy1(border,7,2);
-               scene.addItem(&enemy1);
-               Enemy enemy2(border,7,7);
-               scene.addItem(&enemy2);
-               Enemy* enemy1ptr=&enemy1;
-               Enemy* enemy2ptr=&enemy2;
-               Franklin franklin(border,3,enemy1ptr,enemy2ptr);
+//                Widgets *lives,*bullets;
+//                lives = new Widgets("Lives: ", 3, 500, 0);
+//                bullets = new Widgets("bullets left ", 4, 300, 0);
+//                connect(Franklin, SIGNAL(timer()),lives,SLOT(timer));
+
+                Enemy enemy1(border,7,2);
+                scene.addItem(&enemy1);
+                Enemy enemy2(border,7,7);
+                scene.addItem(&enemy2);
+                Enemy* enemy1ptr=&enemy1;
+                Enemy* enemy2ptr=&enemy2;
+               Franklin franklin(border,enemy1ptr,enemy2ptr);
                scene.addItem(&franklin);
                Bullets bullet1(border,1,1);
                scene.addItem(&bullet1);
@@ -109,10 +118,30 @@ int main(int argc, char *argv[])
                timer->start(1000);
                power_pellets power1(border,4,6);
                scene.addItem(&power1);
-               power_pellets power2(border,5,7);
+               power_pellets power2(border,7,2);
                scene.addItem(&power2);
                franklin.setFlag(QGraphicsPixmapItem::ItemIsFocusable);
                franklin.setFocus();
+               Widgets *lives,*time_left,*state;
+               lives = new Widgets("Lives: ", 3, 400, 20);
+               state = new Widgets("state: ",0, 50,0);
+               time_left = new Widgets("will stay powerful for (seconds)  "
+                                       ": ",5, 50, 20);
+               QObject::connect(&franklin, SIGNAL(decrease_health()),lives,SLOT(timers()));
+               scene.addItem(lives);
+               //QObject::connect(&franklin, SIGNAL(decrease_time()),time_left,SLOT(timers()));
+               scene.addItem(time_left);
+               scene.addItem(state);
+               QObject::connect(&franklin,SIGNAL(winner()),&franklin,SLOT(win()));
+               QObject::connect(&franklin,SIGNAL(loser()),&franklin,SLOT(lose()));
+//               if (SIGNAL(winner())){
+//                                QPixmap door("/Users/markemad/Documents/Fall 2022/CS 2/gta/SciFi_Door_Pixel.png");
+//                                door = door.scaledToWidth(50);
+//                                door = door.scaledToHeight(50);
+//                                boardItems[6][6].setPixmap(door);
+//                                scene.addItem(door);
+//                                fsetpos(50 + 5 * 50, 50 + 5 * 50);
+               //}
                view.setScene(&scene);
                view.show();
                return a.exec();

@@ -1,5 +1,6 @@
 #include "enemy.h"
 #include <QTimer>
+
 Enemy::Enemy(int border[10][10], int r, int c)
     {
        QPixmap enemy("/Users/markemad/Documents/Fall 2022/CS 2/gta/Enemy.png");
@@ -40,6 +41,7 @@ void Enemy::enemyMove()
             columnE--;
         }
         setPos(50 + columnE * 50, 50 + rowE * 50);
+
 }
 int Enemy::getRow(){
      return rowE;
